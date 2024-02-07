@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina Web</title>
+    <!-- Incorporando fontes do Google e Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700&family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        /* Seu CSS fornecido começa aqui */
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins';
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .content {
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        h1 {
+            margin: 10px 0;
+        }
+
+        label {
+            display: inline-block;
+            width: 120px;
+            text-align: left;
+        }
+
+        textarea,
+        input[type="password"],
+        button {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #6A0DAD;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color .3s;
+        }
+
+        button:hover {
+            background-color: #8e24aa;
+        }
+
+        textarea:hover,
+        input[type="password"]:hover,
+        button:hover {
+            border-color: #8e24aa;
+        }
+
+        textarea:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #6A0DAD;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>Grafia Cripto</h1>
+            <label for="mensagemNormal">Digite sua mensagem:</label><br>
+            <textarea id="mensagemNormal" rows="4" cols="50"></textarea><br>
+
+            <label for="mensagemParaCriptografar">Texto para Criptografar/Descriptografar:</label><br>
+            <textarea id="mensagemParaCriptografar" rows="4" cols="50" readonly></textarea><br>
+
+            <label for="chave">Chave:</label><br>
+            <input type="password" id="chave" maxlength="6"><br>
+
+            <button onclick="criptografar()">Criptografar</button>
+            <button onclick="descriptografar()">Descriptografar</button><br>
+
+            <script>
+                function criptografar() {
+                    var mensagem = document.getElementById('mensagemNormal').value;
+                    var chave = document.getElementById('chave').value;
+                    if (chave !== 'qwerty') {
+                        alert('Por favor, o sistema precisa de ativação');
+                        return;
+                    }
+
+                    // Substitui quebras de linha por um caractere especial (§)
+                    mensagem = mensagem.replace(/\n/g, '§');
+
+                    var mensagemCriptografada = '';
+
+                    for (var i = 0; i < mensagem.length; i++) {
+                        var charCode = mensagem.charCodeAt(i) ^ chave.charCodeAt(i % chave.length);
+                        mensagemCriptografada += String.fromCharCode(charCode);
+                    }
+
+                    document.getElementById('mensagemParaCriptografar').value = mensagemCriptografada;
+                }
+
+                function descriptografar() {
+                    var mensagemCriptografada = document.getElementById('mensagemParaCriptografar').value;
+                    var chave = document.getElementById('chave').value;
+                    if (chave !== 'qwerty') {
+                        alert('A chave deve ser "qwerty". Por favor, insira a chave correta.');
+                        return;
+                    }
+
+                    var mensagemDescriptografada = '';
+
+                    for (var i = 0; i < mensagemCriptografada.length; i++) {
+                        var charCode = mensagemCriptografada.charCodeAt(i) ^ chave.charCodeAt(i % chave.length);
+                        mensagemDescriptografada += String.fromCharCode(charCode);
+                    }
+
+                    // Reverte o caractere especial para quebras de linha
+                    mensagemDescriptografada = mensagemDescriptografada.replace(/§/g, '\n');
+
+                    document.getElementById('mensagemNormal').value = mensagemDescriptografada;
+                }
+            </script>
+        </div>
+    </div>
+</body>
+</html>
